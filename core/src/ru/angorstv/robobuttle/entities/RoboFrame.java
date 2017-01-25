@@ -26,4 +26,7 @@ public class RoboFrame extends PhysicsEntity {
 		});
 	}
 
+	@Override
+	public void dispose() {
+	}
 }
