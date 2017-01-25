@@ -1,4 +1,4 @@
-package ru.angorstv.robobuttle.entitys;
+package ru.angorstv.robobuttle.entities;
 
 /**
  * Created by Angor on 24.01.2017.

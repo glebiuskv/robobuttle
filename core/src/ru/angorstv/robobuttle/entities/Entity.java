@@ -1,11 +1,12 @@
-package ru.angorstv.robobuttle.entitys;
+package ru.angorstv.robobuttle.entities;
+
+import ru.angorstv.robobuttle.Const;
 
 /**
  * Created by Андрей on 24.01.2017.
  */
-public abstract class Entity {
+public abstract class Entity implements Const {
 
-	public final static float PIXELS_TO_METERS = 100f;
 	private int weight;
 	private int health;
 	private int cost;

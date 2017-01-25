@@ -1,4 +1,4 @@
-package ru.angorstv.robobuttle.entitys;
+package ru.angorstv.robobuttle.entities;
 
 /**
  * Created by Андрей on 24.01.2017.
