@@ -25,8 +25,4 @@ public class RoboFrame extends PhysicsEntity {
 			module.run();
 		});
 	}
-
-	@Override
-	public void dispose() {
-	}
 }
