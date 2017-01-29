@@ -18,14 +18,14 @@ public abstract class PhysicsEntity extends VisualEntity{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) /
-						PIXELS_TO_METERS,
-				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
+						PIXELS_PER_METER,
+				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_PER_METER);
 
 		body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight()
-				/ 2 / PIXELS_TO_METERS);
+		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_PER_METER, sprite.getHeight()
+				/ 2 / PIXELS_PER_METER);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
@@ -37,9 +37,10 @@ public abstract class PhysicsEntity extends VisualEntity{
 	}
 	public void draw(SpriteBatch batch){
 		//body.setLinearVelocity(10,10);
-		body.applyForceToCenter(100,10,true);
-		Vector2 vect = translateFromBodyToSprite(body.getPosition());
-		sprite.setPosition(vect.x, vect.y);
+		body.applyForceToCenter(10,1,true);
+		float x = PIXELS_PER_METER * body.getPosition().x - sprite.getRegionWidth() / 2;
+		float y = PIXELS_PER_METER * body.getPosition().y - sprite.getRegionHeight() / 2;
+		sprite.setPosition(x, y);
 		sprite.setRotation(MathUtils.radiansToDegrees*body.getAngle());
 		if(!DEBUG_MODE) super.draw(batch);
 	}

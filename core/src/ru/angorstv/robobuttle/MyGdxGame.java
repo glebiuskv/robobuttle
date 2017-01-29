@@ -17,7 +17,7 @@ import ru.angorstv.robobuttle.entities.VisualEntity;
 
 public class MyGdxGame extends ApplicationAdapter implements Const, InputProcessor {
     private SpriteBatch batch;
-    private OrthographicCamera camera;
+    private CameraHelper camera;
     private float deltaTime;
 
     private Array<VisualEntity> entities;
@@ -33,10 +33,8 @@ public class MyGdxGame extends ApplicationAdapter implements Const, InputProcess
         // Создаём графику мира
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT * (h / w));
-
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
+        camera = new CameraHelper((int)VIRTUAL_WIDTH, (int)VIRTUAL_HEIGHT);
+        camera.update(camera.getViewportWidth() /2, camera.getViewportHeight() /2);
 
         batch = new SpriteBatch();
 
@@ -61,20 +59,19 @@ public class MyGdxGame extends ApplicationAdapter implements Const, InputProcess
 
     @Override
     public void render() {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        camera.update(camera.getViewportWidth() /2, camera.getViewportHeight() /2);
+        batch.setProjectionMatrix(camera.getCombined());
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        //batch.draw(img, 0, 0);
-        entities.forEach(entity -> {
-            entity.draw(batch);
-        });
+        for(VisualEntity ve:entities){
+            ve.draw(batch);
+        }
         batch.end();
         deltaTime = Gdx.graphics.getDeltaTime();
         world.step(deltaTime, 6, 2);
         //System.out.println("delta="+ deltaTime);
-        if (DEBUG_MODE) debugRenderer.render(world, camera.combined);
+        if (DEBUG_MODE) debugRenderer.render(world, camera.getCombined());
     }
 
     @Override
