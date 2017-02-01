@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector2;
  */
 public interface Const {
     float PIXELS_PER_METER = 100f;
-    //float VIEWPORT_WIDTH = 8f;
-    //float VIEWPORT_HEIGHT = 6f;
+
     float VIRTUAL_WIDTH = 800f;
     float VIRTUAL_HEIGHT = 480f;
-    //float SPRITE_SIZE = 64f;
-    boolean DEBUG_MODE = true;
+
+    boolean SHOW_PHYSIX = true;
+	boolean SHOW_SPRITE = false;
 }

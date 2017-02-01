@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import ru.angorstv.robobuttle.Const;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static ru.angorstv.robobuttle.Const.*;
 
 /**
@@ -14,9 +17,15 @@ import static ru.angorstv.robobuttle.Const.*;
 public abstract class PhysicsEntity extends VisualEntity {
 	protected Body body;
 
-	protected void createBody(World world) {
+	/**
+	 * Создать физ тело в указанной точке
+	 * @param world
+	 * @param position в метрах
+	 */
+	protected void createBody(World world, Vector2 position, float angle) {
 		//устанавливаем спрайт относительно центра, а не угла
-		sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
+		sprite.setPosition((position.x * PIXELS_PER_METER) - sprite.getWidth() / 2,
+				(position.y * PIXELS_PER_METER) - sprite.getHeight() / 2);
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -24,6 +33,7 @@ public abstract class PhysicsEntity extends VisualEntity {
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) /
 						PIXELS_PER_METER,
 				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_PER_METER);
+		bodyDef.angle = angle;
 
 		body = world.createBody(bodyDef);
 
@@ -35,6 +45,7 @@ public abstract class PhysicsEntity extends VisualEntity {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 10f;
+		fixtureDef.friction = 0.4f; //friction when rubbing against other shapes
 		fixtureDef.restitution = 0.5f;
 
 		body.createFixture(fixtureDef);
@@ -55,6 +66,6 @@ public abstract class PhysicsEntity extends VisualEntity {
 		sprite.setPosition((body.getPosition().x * PIXELS_PER_METER) - sprite.getWidth() / 2,
 				(body.getPosition().y * PIXELS_PER_METER) - sprite.getHeight() / 2);
 		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
-		if (DEBUG_MODE) super.draw(batch);
+		if (SHOW_SPRITE) super.draw(batch);
 	}
 }

@@ -10,13 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class VisualEntity extends Entity {
 	protected Sprite sprite;
 
-	public void draw(SpriteBatch batch){
-		sprite.draw(batch);
+	public void draw(SpriteBatch batch) {
+		if (sprite != null)
+			sprite.draw(batch);
 	}
 
-	protected void createSprite(String spriteName){
+	protected void createSprite(String spriteName) {
 		sprite = new Sprite(new Texture(spriteName));
-		//sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
 	}
 
 	public Sprite getSprite() {
