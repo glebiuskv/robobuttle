@@ -16,7 +16,14 @@ public abstract class VisualEntity extends Entity {
 
 	protected void createSprite(String spriteName){
 		sprite = new Sprite(new Texture(spriteName));
-		sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
+		//sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
 	}
 
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
 }

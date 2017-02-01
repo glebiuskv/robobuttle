@@ -9,8 +9,8 @@ public class DesktopLauncher implements Const{
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.resizable = false;
-		config.height = 600;
-		config.width = 800;
+		config.height = (int) Const.VIRTUAL_HEIGHT;
+		config.width = (int) Const.VIRTUAL_WIDTH;
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }

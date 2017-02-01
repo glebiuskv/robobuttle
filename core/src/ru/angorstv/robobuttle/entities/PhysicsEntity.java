@@ -11,12 +11,16 @@ import static ru.angorstv.robobuttle.Const.*;
 /**
  * Created by Андрей on 25.01.2017.
  */
-public abstract class PhysicsEntity extends VisualEntity{
+public abstract class PhysicsEntity extends VisualEntity {
 	protected Body body;
 
-	protected void createBody (World world){
+	protected void createBody(World world) {
+		//устанавливаем спрайт относительно центра, а не угла
+		sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
+
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		//позиционирование с учётом масштаба физического мира
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) /
 						PIXELS_PER_METER,
 				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_PER_METER);
@@ -24,24 +28,33 @@ public abstract class PhysicsEntity extends VisualEntity{
 		body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
+		//границы физического тела с учётом масштаба
 		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_PER_METER, sprite.getHeight()
 				/ 2 / PIXELS_PER_METER);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 100f;
+		fixtureDef.density = 10f;
 		fixtureDef.restitution = 0.5f;
 
 		body.createFixture(fixtureDef);
 		shape.dispose();
 	}
-	public void draw(SpriteBatch batch){
-		//body.setLinearVelocity(10,10);
-		body.applyForceToCenter(10,1,true);
-		float x = PIXELS_PER_METER * body.getPosition().x - sprite.getRegionWidth() / 2;
-		float y = PIXELS_PER_METER * body.getPosition().y - sprite.getRegionHeight() / 2;
-		sprite.setPosition(x, y);
-		sprite.setRotation(MathUtils.radiansToDegrees*body.getAngle());
-		if(!DEBUG_MODE) super.draw(batch);
+
+	public Body getBody() {
+		return body;
+	}
+
+	public void setBody(Body body) {
+		this.body = body;
+	}
+
+
+	@Override
+	public void draw(SpriteBatch batch) {
+		sprite.setPosition((body.getPosition().x * PIXELS_PER_METER) - sprite.getWidth() / 2,
+				(body.getPosition().y * PIXELS_PER_METER) - sprite.getHeight() / 2);
+		sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
+		if (DEBUG_MODE) super.draw(batch);
 	}
 }

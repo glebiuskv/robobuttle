@@ -6,19 +6,24 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import ru.angorstv.robobuttle.entities.Entity;
+
+import ru.angorstv.robobuttle.Const;
 import ru.angorstv.robobuttle.entities.RoboFrame;
 import ru.angorstv.robobuttle.entities.VisualEntity;
+
 
 public class MyGdxGame extends ApplicationAdapter implements Const, InputProcessor {
     private SpriteBatch batch;
     private CameraHelper camera;
+	private Matrix4 debugMatrix;
     private float deltaTime;
+	private RoboFrame roboFrame;
 
     private Array<VisualEntity> entities;
 
@@ -52,26 +57,29 @@ public class MyGdxGame extends ApplicationAdapter implements Const, InputProcess
 
         // Создаём обитателей мира
         entities = new Array<>();
-        entities.add(new RoboFrame("tank.png", world));
+		roboFrame = new RoboFrame("tank.png", world);
+        entities.add(roboFrame);
 
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render() {
-        camera.update(camera.getViewportWidth() /2, camera.getViewportHeight() /2);
+		deltaTime = Gdx.graphics.getDeltaTime();
+		world.step(1/60f, 6, 2);
+		camera.update(camera.getViewportWidth() /2, camera.getViewportHeight() /2);
         batch.setProjectionMatrix(camera.getCombined());
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+		debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_PER_METER, PIXELS_PER_METER, 0);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         for(VisualEntity ve:entities){
             ve.draw(batch);
         }
         batch.end();
-        deltaTime = Gdx.graphics.getDeltaTime();
-        world.step(deltaTime, 6, 2);
-        //System.out.println("delta="+ deltaTime);
-        if (DEBUG_MODE) debugRenderer.render(world, camera.getCombined());
+
+
+        if (DEBUG_MODE) debugRenderer.render(world, debugMatrix);
     }
 
     @Override
@@ -97,7 +105,9 @@ public class MyGdxGame extends ApplicationAdapter implements Const, InputProcess
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+
+		roboFrame.getBody().applyForceToCenter(screenX,screenY,true);
+		return true;
     }
 
     @Override

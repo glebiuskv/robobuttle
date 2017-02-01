@@ -10,7 +10,7 @@ public interface Const {
     //float VIEWPORT_WIDTH = 8f;
     //float VIEWPORT_HEIGHT = 6f;
     float VIRTUAL_WIDTH = 800f;
-    float VIRTUAL_HEIGHT = 600f;
+    float VIRTUAL_HEIGHT = 480f;
     //float SPRITE_SIZE = 64f;
     boolean DEBUG_MODE = true;
 }

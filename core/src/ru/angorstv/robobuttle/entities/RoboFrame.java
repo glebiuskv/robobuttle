@@ -11,8 +11,8 @@ public class RoboFrame extends PhysicsEntity {
 	private Engine engine;
 	private Battery battery;
 
-
 	private float direct;
+
 	private Array<Module> modules = new Array<>();
 
 	public RoboFrame(String spriteName, World world) {
@@ -24,5 +24,10 @@ public class RoboFrame extends PhysicsEntity {
 		modules.forEach(module -> {
 			module.run();
 		});
+	}
+
+	public void draw (SpriteBatch batch){
+		//body.applyForceToCenter(1, 1, true);
+		super.draw(batch);
 	}
 }
