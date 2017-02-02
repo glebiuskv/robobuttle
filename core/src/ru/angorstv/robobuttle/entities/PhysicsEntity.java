@@ -16,6 +16,11 @@ import static ru.angorstv.robobuttle.Const.*;
  */
 public abstract class PhysicsEntity extends VisualEntity {
 	protected Body body;
+	protected final float angularDamping = 1.0f;
+	protected final float linearDamping = 0.1f;
+	protected final float density = 10f;
+	protected final float friction = 0.4f; //friction when rubbing against other shapes
+	protected final float restitution = 0.5f;
 
 	/**
 	 * Создать физ тело в указанной точке
@@ -34,6 +39,8 @@ public abstract class PhysicsEntity extends VisualEntity {
 						PIXELS_PER_METER,
 				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_PER_METER);
 		bodyDef.angle = angle;
+		bodyDef.angularDamping = angularDamping;
+		bodyDef.linearDamping = linearDamping;
 
 		body = world.createBody(bodyDef);
 
@@ -44,9 +51,9 @@ public abstract class PhysicsEntity extends VisualEntity {
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 10f;
-		fixtureDef.friction = 0.4f; //friction when rubbing against other shapes
-		fixtureDef.restitution = 0.5f;
+		fixtureDef.density  = density;
+		fixtureDef.friction = friction;
+		fixtureDef.restitution = restitution;
 
 		body.createFixture(fixtureDef);
 		shape.dispose();
@@ -59,7 +66,6 @@ public abstract class PhysicsEntity extends VisualEntity {
 	public void setBody(Body body) {
 		this.body = body;
 	}
-
 
 	@Override
 	public void draw(SpriteBatch batch) {
