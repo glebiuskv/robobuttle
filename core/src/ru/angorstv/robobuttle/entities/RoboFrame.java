@@ -105,27 +105,40 @@ public class RoboFrame extends PhysicsEntity {
 
 	private void testMoveWORotation(){
 		direct = body.getAngle();
-		Vector2 dir = new Vector2(0,-1);
+		Vector2 dir = new Vector2(0,1);
 
 		//вектор на цель из центра масс
 		Vector2 toTarget = new Vector2(target);
 		toTarget.sub(body.getPosition());
 		Vector2 a = body.getLocalVector(toTarget);
 
-		// угол между направлением body и направлением на цель в радианах
+		// угол между направлением body и направлением на цель
 		float angle = a.angle(dir);
-		angle = degreesToRadians * angle;
-		if (direct != angle) {
-			if (direct < angle) {
-				body.applyTorque(0.1f, true);
-			} else {
-				body.applyTorque(-0.1f, true);
-			}
-		}
 
-		//if()
-		//body.applyForceToCenter(velocity.nor(), true);
-		//body.applyLinearImpulse(velocity.nor(), body.getPosition(),true);
+		if (angle >0){
+				body.applyTorque(0.05f, true);
+			} else {
+				body.applyTorque(-0.05f, true);
+			}
+//		angle = degreesToRadians * angle;
+//		if (direct != angle) {
+//			if (direct < angle) {
+//				body.applyTorque(0.05f, true);
+//			} else {
+//				body.applyTorque(-0.05f, true);
+//			}
+//		}
+
+		// газ и тормоз в зависимости от растояни от точки назначения
+		if(target.dst(body.getPosition())>sprite.getHeight()/PIXELS_PER_METER){
+			body.applyForceToCenter(body.getWorldVector(new Vector2(0,0.1f)), true);
+		}else{
+			Vector2 v = body.getLinearVelocityFromLocalPoint(this.body.getPosition());
+			v.nor();
+			v.x = v.x *-0.3f;
+			v.y = v.y * -0.3f;
+			body.applyForceToCenter(v,true);
+		}
 
 	}
 
@@ -148,4 +161,6 @@ public class RoboFrame extends PhysicsEntity {
 
 
 	}
+
+
 }
