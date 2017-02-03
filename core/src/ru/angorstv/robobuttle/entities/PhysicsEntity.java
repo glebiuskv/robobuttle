@@ -18,9 +18,9 @@ public abstract class PhysicsEntity extends VisualEntity {
 	protected Body body;
 	protected final float angularDamping = 1.0f;
 	protected final float linearDamping = 0.1f;
-	protected final float density = 10f;
+	protected final float density = 5f;
 	protected final float friction = 0.4f; //friction when rubbing against other shapes
-	protected final float restitution = 0.5f;
+	protected final float restitution = 1f;
 
 	/**
 	 * Создать физ тело в указанной точке
